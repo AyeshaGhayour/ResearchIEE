@@ -1,0 +1,41 @@
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Model weights and cached AI models
+*.pth
+*.pt
+*.onnx
+.cache/
+.cache_huggingface/
+
+# Uploaded research papers
+data/uploads/*
+!data/uploads/.gitkeep
+
+# Generated outputs
+outputs/*
+!outputs/.gitkeep
+
+# Logs
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE settings
+.idea/

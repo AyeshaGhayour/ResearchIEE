@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Idea Catalyst | Researchiee</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .ideas-page {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 25px;
+        }
+
+        .ideas-header { margin-bottom: 30px; }
+        .ideas-header h1 { color: #edf2ff; }
+        .ideas-header p { color: #929fba; }
+
+        .idea-card {
+            background: #121a2d;
+            border: 1px solid #26334d;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .idea-card h2 {
+            color: #45d6d0;
+            font-size: 20px;
+        }
+
+        .idea-card p {
+            color: #c3cce0;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .idea-label {
+            color: #45d6d0;
+            font-weight: bold;
+        }
+
+        .notice, .empty-message { color: #929fba; }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #45d6d0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+<main class="ideas-page">
+
+   
+    {% include 'navbar.html' %}
+
+    <header class="ideas-header">
+        <h1>Idea Catalyst</h1>
+        <p>
+            Explore preliminary research directions based on
+            relationships between topics in your uploaded papers.
+        </p>
+    </header>
+
+    <div class="idea-card notice">
+        <strong>Note:</strong>
+        These are automatically generated research directions based
+        on keyword associations in your uploaded collection.
+        They are not validated research proposals or confirmed
+        gaps in published literature.
+    </div>
+
+    {% if research_ideas %}
+
+        {% for item in research_ideas %}
+        <article class="idea-card">
+
+            <h2>Research Idea {{ loop.index }}</h2>
+
+            <p>
+                <span class="idea-label">Main Topic:</span>
+                {{ item.topic }}
+            </p>
+
+            <p>
+                <span class="idea-label">Suggested Direction:</span>
+                {{ item.idea }}
+            </p>
+
+            <p>
+                <span class="idea-label">Related Research Topics:</span>
+                {% if item.related_topics %}
+                    {{ item.related_topics | join(", ") }}
+                {% else %}
+                    No strong keyword associations found in the uploaded passages.
+                {% endif %}
+            </p>
+
+            <p>
+                <span class="idea-label">Evidence:</span>
+                {{ item.basis }}
+            </p>
+
+            <p>
+                <span class="idea-label">Source Papers:</span>
+                {% if item.papers %}
+                    {{ item.papers | join(", ") }}
+                {% else %}
+                    No source papers available.
+                {% endif %}
+            </p>
+
+        </article>
+        {% endfor %}
+
+    {% else %}
+        <p class="empty-message">
+            No research ideas available yet.
+            Upload more papers and explore research gaps first.
+        </p>
+    {% endif %}
+
+</main>
+</body>
+</html>

@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Researchiee | AI Research Intelligence</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">Research<span>IEE</span></div>
+        <div class="status">● AI Research Workspace</div>
+    </header>
+
+    <main>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Think Beyond the <span>Paper.</span></h1>
+
+            <p>
+                Don't just find research. Discover what connects it.
+                Explore ideas, compare studies, and uncover new research directions.
+            </p>
+        </section>
+
+
+        <!-- PDF Upload Section -->
+        <section class="upload-panel">
+
+            <h2>Build Your Research Library</h2>
+
+            <p>
+                Start by adding academic papers to your personal research workspace.
+            </p>
+
+            <div class="upload-area">
+
+                <div class="feature-icon">📚</div>
+
+                <h3>Upload Your Research Papers</h3>
+
+                <p>Choose an academic PDF to add to your research library.</p>
+
+                <form
+                    method="POST"
+                    action="{{ url_for('home') }}"
+                    enctype="multipart/form-data"
+                >
+
+                    <label for="paper">Select an academic PDF</label>
+
+                    <input
+                        type="file"
+                        id="paper"
+                        name="paper"
+                        accept=".pdf,application/pdf"
+                        required
+                    >
+
+                    <button type="submit" class="upload-button">
+                        Upload & Process PDF
+                    </button>
+
+                </form>
+
+                <p class="upload-note">
+                    PDF only · Maximum file size: 20 MB
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- Semantic Search Section -->
+        <section class="upload-panel search-panel">
+
+            <h2>🔎 Ask Your Research Library</h2>
+
+            <p>
+                Ask a question in your own words. ResearchMind will find
+                relevant passages across your uploaded papers.
+            </p>
+
+            <form method="POST" action="{{ url_for('home') }}">
+
+                <label for="question">Your research question</label>
+
+                <input
+                    type="text"
+                    id="question"
+                    name="question"
+                    class="search-input"
+                    placeholder="Example: How is deep learning used in medical diagnosis?"
+                    value="{{ question or '' }}"
+                    required
+                >
+
+                <button type="submit" class="upload-button">
+                    Search Research Papers
+                </button>
+
+            </form>
+
+
+            <!-- Search Results -->
+            {% if search_results %}
+
+                <div class="search-results">
+
+                    <h3>Research Findings</h3>
+
+                    {% for result in search_results %}
+
+                        <div class="result-card">
+
+                            <div class="result-header">
+
+                                <strong>📄 {{ result.paper }}</strong>
+
+                                <span>{{ result.score }}% similarity</span>
+
+                            </div>
+
+                            <p class="result-location">
+                                Page {{ result.page }}
+                            </p>
+
+                            <p>{{ result.text }}</p>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+<!-- Research Intelligence Features -->
+<section class="features-section">
+
+    <h2 class="section-title">
+        Explore Research Intelligence
+    </h2>
+
+    <div class="features">
+
+        <!-- Semantic Research Explorer -->
+        <a class="feature-card"
+           href="{{ url_for('semantic_search') }}">
+
+            <div class="feature-icon">🔎</div>
+
+            <h3>Semantic Research Explorer</h3>
+
+            <p>
+                Search academic papers using natural language.
+            </p>
+
+        </a>
+
+        <!-- Research Connection Map -->
+        <a class="feature-card"
+           href="{{ url_for('connections') }}">
+
+            <div class="feature-icon">🕸️</div>
+
+            <h3>Research Connection Map</h3>
+
+            <p>
+                Discover relationships between research concepts.
+            </p>
+
+        </a>
+
+        <!-- Paper Comparison Engine -->
+        <a class="feature-card"
+           href="{{ url_for('comparison') }}">
+
+            <div class="feature-icon">⚖️</div>
+
+            <h3>Paper Comparison Engine</h3>
+
+            <p>
+                Compare research methods, findings, and limitations.
+            </p>
+
+        </a>
+
+        <!-- Research Gap Explorer -->
+        <a class="feature-card"
+           href="{{ url_for('gaps') }}">
+
+            <div class="feature-icon">🔍</div>
+
+            <h3>Research Gap Explorer</h3>
+
+            <p>
+                Discover underrepresented topics in your uploaded research papers.
+            </p>
+
+        </a>
+
+        <!-- Idea Catalyst -->
+        <a class="feature-card"
+           href="{{ url_for('ideas') }}">
+
+            <div class="feature-icon">💡</div>
+
+            <h3>Idea Catalyst</h3>
+
+            <p>
+                Explore research directions inspired by underrepresented topics.
+            </p>
+
+        </a>
+
+    </div>
+
+</section>
+
+        
+
+        <!-- Research Library -->
+        <section class="upload-panel">
+
+            <h2>Research Library</h2>
+
+            {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+                    {% for message in messages %}
+
+                        <p class="upload-message">{{ message }}</p>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            {% if uploaded_papers %}
+
+                {% for paper in uploaded_papers %}
+
+                    <div class="paper-item">
+
+                        <h3>📄 {{ paper.name }}</h3>
+
+                        <p>
+                            {{ paper.pages }} pages ·
+                            {{ paper.characters }} characters extracted
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>Your uploaded papers will appear here.</p>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+        ResearchMind · AI-Powered Research Intelligence
+    </footer>
+
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

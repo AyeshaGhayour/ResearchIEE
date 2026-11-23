@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Paper Comparison | Researchiee</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .comparison-page {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 25px;
+        }
+
+        .comparison-header {
+            margin-bottom: 30px;
+        }
+
+        .comparison-header h1 {
+            color: #edf2ff;
+            margin-bottom: 10px;
+        }
+
+        .comparison-header p {
+            color: #929fba;
+        }
+
+        .comparison-form,
+        .comparison-card {
+            background: #121a2d;
+            border: 1px solid #26334d;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 25px;
+        }
+
+        .comparison-form label {
+            display: block;
+            color: #edf2ff;
+            margin-bottom: 8px;
+        }
+
+        .comparison-form select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: #19243a;
+            color: #edf2ff;
+            border: 1px solid #26334d;
+        }
+
+        .comparison-results {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .comparison-card h2 {
+            color: #45d6d0;
+            font-size: 18px;
+            overflow-wrap: anywhere;
+        }
+
+        .comparison-card h3 {
+            color: #edf2ff;
+            margin-top: 22px;
+        }
+
+        .comparison-card p,
+        .comparison-card li {
+            color: #c3cce0;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .keyword {
+            display: inline-block;
+            background: #19243a;
+            border: 1px solid #26334d;
+            border-radius: 20px;
+            padding: 6px 12px;
+            margin: 5px 4px 5px 0;
+            color: #45d6d0;
+            font-size: 13px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #45d6d0;
+            text-decoration: none;
+        }
+
+        .empty-message {
+            color: #929fba;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .comparison-results {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'navbar.html' %}
+
+    
+
+    <main class="comparison-page">
+
+       
+
+        <header class="comparison-header">
+            <h1>Paper Comparison Engine</h1>
+
+            <p>
+                Compare two uploaded research papers through
+                their extracted keywords and available passages.
+            </p>
+        </header>
+
+
+        <form method="POST" class="comparison-form">
+
+            <label for="paper_1">Select First Research Paper</label>
+
+            <select name="paper_1" id="paper_1" required>
+                <option value="">Choose first paper</option>
+
+                {% for paper in paper_names %}
+                    <option
+                        value="{{ paper }}"
+                        {% if selected_papers and selected_papers[0] == paper %}selected{% endif %}
+                    >
+                        {{ paper }}
+                    </option>
+                {% endfor %}
+            </select>
+
+
+            <label for="paper_2">Select Second Research Paper</label>
+
+            <select name="paper_2" id="paper_2" required>
+                <option value="">Choose second paper</option>
+
+                {% for paper in paper_names %}
+                    <option
+                        value="{{ paper }}"
+                        {% if selected_papers and selected_papers[1] == paper %}selected{% endif %}
+                    >
+                        {{ paper }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="upload-button">
+                Compare Research Papers
+            </button>
+
+        </form>
+
+
+        {% if comparison_results %}
+
+            <section class="comparison-results">
+
+                {% for paper_name, result in comparison_results.items() %}
+
+                    <article class="comparison-card">
+
+                        <h2>{{ paper_name }}</h2>
+
+                        <h3>Extracted Keywords</h3>
+
+                        {% for keyword, count in result.keywords %}
+
+                            <span class="keyword">
+                                {{ keyword }} ({{ count }})
+                            </span>
+
+                        {% else %}
+
+                            <p>No keywords found.</p>
+
+                        {% endfor %}
+
+                        <h3>Available Passages</h3>
+
+                        <p>
+                            {{ result.passage_count }} passages extracted
+                        </p>
+
+                        <p>
+                            {% if result.available %}
+                                Paper successfully processed.
+                            {% else %}
+                                No passages available.
+                            {% endif %}
+                        </p>
+
+                    </article>
+
+                {% endfor %}
+
+            </section>
+
+        {% elif request.method == "POST" %}
+
+            <p class="empty-message">
+                Please select two different valid research papers.
+            </p>
+
+        {% else %}
+
+            <p class="empty-message">
+                Select two papers above to begin your comparison.
+            </p>
+
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

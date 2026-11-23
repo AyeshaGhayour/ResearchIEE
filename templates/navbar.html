@@ -1,0 +1,42 @@
+
+<header class="site-header">
+
+    <a href="{{ url_for('home') }}" class="site-logo">
+        Research<span>IEE</span>
+    </a>
+
+    <nav class="site-nav">
+
+        <a href="{{ url_for('home') }}"
+           class="{% if request.endpoint == 'home' %}active{% endif %}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('semantic_search') }}"
+           class="{% if request.endpoint == 'semantic_search' %}active{% endif %}">
+            Research Explorer
+        </a>
+
+        <a href="{{ url_for('connections') }}"
+           class="{% if request.endpoint == 'connections' %}active{% endif %}">
+            Connection Map
+        </a>
+
+        <a href="{{ url_for('comparison') }}"
+           class="{% if request.endpoint == 'comparison' %}active{% endif %}">
+            Comparison
+        </a>
+
+        <a href="{{ url_for('gaps') }}"
+           class="{% if request.endpoint == 'gaps' %}active{% endif %}">
+            Research Gaps
+        </a>
+
+        <a href="{{ url_for('ideas') }}"
+           class="{% if request.endpoint == 'ideas' %}active{% endif %}">
+            Idea Catalyst
+        </a>
+
+    </nav>
+
+</header>

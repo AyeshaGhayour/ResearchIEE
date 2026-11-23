@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Gap Explorer | Researchiee</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .gaps-page {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 25px;
+        }
+
+        .gaps-header { margin-bottom: 30px; }
+        .gaps-header h1 { color: #edf2ff; }
+        .gaps-header p { color: #929fba; }
+
+        .gap-card {
+            background: #121a2d;
+            border: 1px solid #26334d;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 18px;
+        }
+
+        .gap-card h2 {
+            color: #45d6d0;
+            font-size: 20px;
+            overflow-wrap: anywhere;
+        }
+
+        .gap-card p, .gap-card li {
+            color: #c3cce0;
+            line-height: 1.7;
+        }
+
+        .gap-score {
+            color: #45d6d0;
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #45d6d0;
+            text-decoration: none;
+        }
+
+        .notice, .empty-message { color: #929fba; }
+    </style>
+</head>
+
+<body>
+<main class="gaps-page">
+
+    
+    {% include 'navbar.html' %}
+
+    <header class="gaps-header">
+        <h1>Research Gap Explorer</h1>
+        <p>
+            Discover topics that are underrepresented across your
+            uploaded research papers.
+        </p>
+    </header>
+
+    <div class="gap-card notice">
+        <strong>Important:</strong>
+        These are exploratory signals based only on your uploaded
+        papers. They are not confirmed gaps in the entire research
+        literature. Review the original papers before drawing conclusions.
+    </div>
+
+    {% if gap_results %}
+
+        {% for gap in gap_results %}
+        <article class="gap-card">
+
+            <h2>{{ loop.index }}. {{ gap.topic }}</h2>
+
+            <p>
+                Appears in
+                <strong>{{ gap.paper_count }}</strong>
+                out of
+                <strong>{{ gap.total_papers }}</strong>
+                uploaded papers.
+            </p>
+<p>
+    Underrepresentation indicator:
+    <span class="gap-score">
+        {{ (gap.gap_score * 100)|round(1) }}%
+    </span>
+</p>
+
+<p>
+    <strong>Topic frequency:</strong>
+    {{ gap.frequency }} occurrences across the uploaded collection.
+</p>
+
+            <p><strong>Found in:</strong></p>
+
+            <ul>
+                {% for paper in gap.papers %}
+                <li>{{ paper }}</li>
+                {% endfor %}
+            </ul>
+
+        </article>
+        {% endfor %}
+
+    {% else %}
+        <p class="empty-message">
+            No underrepresented topics found. Upload more research papers
+            to explore possible gaps.
+        </p>
+    {% endif %}
+
+</main>
+</body>
+</html>

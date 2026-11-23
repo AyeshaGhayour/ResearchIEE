@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Research Connection Map | Researchiee</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .connection-page {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 25px;
+        }
+
+        .connection-header {
+            margin-bottom: 30px;
+        }
+
+        .connection-header h1 {
+            color: #edf2ff;
+            margin-bottom: 10px;
+        }
+
+        .connection-header p {
+            color: #929fba;
+        }
+
+        .graph-container {
+            background: #121a2d;
+            border: 1px solid #26334d;
+            border-radius: 16px;
+            padding: 15px;
+            overflow: hidden;
+        }
+
+        .connection-list {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .connection-card {
+            background: #121a2d;
+            border: 1px solid #26334d;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .connection-card h3 {
+            color: #45d6d0;
+            margin-bottom: 12px;
+        }
+
+        .connection-card p {
+            color: #edf2ff;
+            margin: 7px 0;
+            overflow-wrap: anywhere;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #45d6d0;
+            text-decoration: none;
+        }
+
+        @media (max-width: 700px) {
+            .connection-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'navbar.html' %}
+
+    <main class="connection-page">
+
+        
+
+        <header class="connection-header">
+            <h1>Research Connection Map</h1>
+            <p>
+                Discover shared concepts and relationships
+                across your uploaded research papers.
+            </p>
+        </header>
+
+        <section class="graph-container">
+            {{ graph_html | safe }}
+        </section>
+
+        <section>
+            <h2>Discovered Research Connections</h2>
+
+            <div class="connection-list">
+
+                {% for connection in connections %}
+
+                <article class="connection-card">
+
+                    <h3>{{ connection.keyword }}</h3>
+
+                    <p>
+                        <strong>Paper 1:</strong>
+                        {{ connection.paper_1 }}
+                    </p>
+
+                    <p>
+                        <strong>Paper 2:</strong>
+                        {{ connection.paper_2 }}
+                    </p>
+
+                    <p>
+                        <strong>Connection score:</strong>
+                        {{ connection.score }}
+                    </p>
+
+                    <p>
+                        <strong>Combined frequency:</strong>
+                        {{ connection.frequency }}
+                    </p>
+
+                </article>
+
+                {% else %}
+
+                <p>No research connections found yet.</p>
+
+                {% endfor %}
+
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>
